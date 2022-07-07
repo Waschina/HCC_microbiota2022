@@ -1,7 +1,5 @@
 # HCC_microbiota2022
 
-*A project with: Maria Effenberger & Herbert Tilg (Innsbruck),  Konrad Aden (Kiel)*
-
 ## Dependencies
 
 - ***R*** (version >= 4.1.2)
