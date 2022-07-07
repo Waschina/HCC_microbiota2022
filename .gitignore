@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+data/fastq/DNA*
+data/silva_refs/*
+*.pdf
+*.png
+*.svg
+*.RDS
