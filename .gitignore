@@ -8,3 +8,4 @@ data/silva_refs/*
 *.png
 *.svg
 *.RDS
+output/ENA*
