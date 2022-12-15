@@ -1,4 +1,5 @@
 myCol <- c(NAFLD = "#2c7bb6", Cirrhosis = "#fdae61", HCC = "#d7191c")
+set.seed(24118)
 
 #––––––––––––––––––––––––––#
 # Beta-Diversity analysis  #
@@ -115,7 +116,7 @@ for(itype in names(BC_MDS)) {
   # perform PERMANOVA
   p_test <- adonis(BC_MDS[[itype]]$dist ~ tmp$Condition,
                    method = "bray")
-  p_test <- paste0("<br>(p=",round(p_test$aov.tab$`Pr(>F)`[1], digits = 3), ", R^2 =",
+  p_test <- paste0("<br>(p=",round(p_test$aov.tab$`Pr(>F)`[1], digits = 3), ", R<sup>2</sup> =",
                    round(p_test$aov.tab$R2[1], digits = 3),")")
   tmp[["itype"]] <- paste0("<b>",tmp[["itype"]],"</b>",p_test)
   

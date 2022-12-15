@@ -7,7 +7,7 @@
   - dada2 (v. 1.24.0)
   - Biostrings (v. 2.64.0)
   - data.table (v. 1.14.2)
-  - vegan (v. 2.6.2)
+  - vegan (v. 2.6-4)
   - ggplot2 (v. 3.3.6)
   - bit64 (v. 4.0.5)
   - ggtext (v. 0.1.1)
@@ -78,7 +78,7 @@ source("scripts/stat_betaDiversity.R")
 
 ##### Compositional analysis
 
-Faecal bacterial in blood and liver samples. Definition of <u>faecal bacteria</u>: "The ASV has an relative abundance of >= 1% in at least 1 faecal sample."
+Faecal bacteria in blood and liver samples. Definition of <u>faecal bacteria</u>: "The ASV has an relative abundance of >= 1% in at least 1 faecal sample."
 
 ```r
 # Faecal bacteria proportion in blood and liver
@@ -98,7 +98,7 @@ Differential gene expression analysis using 'DESeq2'. GO-Term enrichment analysi
 
 ```r
 # Main trascriptome analysis
-source("scripts/stat_RNA-Seq_deseq2_GOenr.R")
+source("scripts/stat_RNA-Seq_deseq2_GOenr2.R")
 ```
 
 ##### RNA-Seq -X- 16S-Liver data co-analysis
@@ -108,6 +108,8 @@ source("scripts/stat_RNA-Seq_deseq2_GOenr.R")
 deseq analysis design: `design <- ~ genus_abun + age_sc + sex`
 
 where the Genus abundance is normalised using variant-stabilizing transformation as implemented in DESeq2 and susequently z-transformed per sample to speed up convergence in deseq model fitting.
+
+Analysis is limited to HCC samples (n=17).
 
 ```r
 source("scripts/stat_DNA_Genus_rnaseq_deseq.R")

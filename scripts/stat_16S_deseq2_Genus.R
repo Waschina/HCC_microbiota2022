@@ -172,3 +172,5 @@ p_diff_genus <- ggplot(stats_genus[!(grp1 == "Cirrhosis" & grp2 == "HCC") & Genu
         strip.text = element_text(face = "bold"))
 ggsave(p_diff_genus, file = "output/plots/16S_diffGenus_deseq2.pdf",
        width = 4.8, height = 4.6)
+ggsave(p_diff_genus, file = "output/plots/submission1/Fig3.pdf",
+       width = 4.8, height = 4.6)
