@@ -30,6 +30,7 @@ hcc_dw <- deg_stats[pt.col %in% c("NAFLDtop","NAFLD") & contrast == "NAFLD_vs_HC
 asv_tab <- read.table("data/dada/asv_tab.tsv", check.names = F)
 spl_meta <- fread("data/meta/samples_16S_DNA.csv")
 spl_meta <- spl_meta[include == TRUE]
+spl_meta <- spl_meta[sample != 576]
 spl_meta <- spl_meta[sample %in% colnames(asv_tab)]
 
 # load taxonomic predictions

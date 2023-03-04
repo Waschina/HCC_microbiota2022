@@ -14,6 +14,7 @@ myCol <- c(NAFLD = "#2c7bb6", Cirrhosis = "#fdae61", HCC = "#d7191c")
 asv_tab <- read.table("data/dada/asv_tab.tsv", check.names = F)
 spl_meta <- fread("data/meta/samples_16S_DNA.csv")
 spl_meta <- spl_meta[include == TRUE]
+spl_meta <- spl_meta[sample != 576]
 spl_meta <- spl_meta[sample %in% colnames(asv_tab)]
 
 #genus_tab <- read.table("data/dada/tax_tab_Genus.tsv", check.names = F, sep = "\t")
@@ -172,5 +173,5 @@ p_diff_genus <- ggplot(stats_genus[!(grp1 == "Cirrhosis" & grp2 == "HCC") & Genu
         strip.text = element_text(face = "bold"))
 ggsave(p_diff_genus, file = "output/plots/16S_diffGenus_deseq2.pdf",
        width = 4.8, height = 4.6)
-ggsave(p_diff_genus, file = "output/plots/submission1/Fig3.pdf",
-       width = 4.8, height = 4.6)
+# ggsave(p_diff_genus, file = "output/plots/submission1/Fig3.pdf",
+#        width = 4.8, height = 4.6)

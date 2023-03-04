@@ -15,6 +15,7 @@ library(ggpubr)
 
 spl_meta <- fread("data/meta/samples_16S_DNA.csv")
 spl_meta <- spl_meta[include == TRUE]
+spl_meta <- spl_meta[sample != 576]
 dt_adiv  <- fread("data/dada/DT_alpha_diversity.tsv")
 
 dt <- merge(spl_meta, dt_adiv, by = "sample")

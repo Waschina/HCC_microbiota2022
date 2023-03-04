@@ -11,6 +11,7 @@ myCol <- c(NAFLD = "#2c7bb6", HCC = "#d7191c", Cirrhosis = "#fdae61")
 # load 16S DNA sample info
 spls_16S_DNA <- fread("data/meta/samples_16S_DNA.csv")[include == 1]
 spls_16S_DNA[, case_ID := paste(Patient_ID, Condition, sep = "_")]
+spls_16S_DNA <- spls_16S_DNA[sample != 576]
 
 # load Kiel rna-seq sample info
 spls_rnaseq <- fread("data/rnaseq/sample_information_edit.csv")

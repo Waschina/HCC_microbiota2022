@@ -14,6 +14,7 @@ suppressMessages(library(DESeq2))
 # DNA samples
 spl_meta <- fread("data/meta/samples_16S_DNA.csv")
 spl_meta <- spl_meta[include == TRUE]
+spl_meta <- spl_meta[sample != 576]
 asv_tab <- read.table("data/dada/asv_tab.tsv", check.names = F)
 
 # RNA samples

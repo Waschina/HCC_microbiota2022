@@ -78,18 +78,25 @@ source("scripts/stat_betaDiversity.R")
 
 ##### Compositional analysis
 
-Faecal bacteria in blood and liver samples. Definition of <u>faecal bacteria</u>: "The ASV has an relative abundance of >= 1% in at least 1 faecal sample."
+Faecal bacteria in blood and liver samples. Definition of <u>faecal bacteria</u>: "The ASV has an relative abundance of >= 0.1% in at least 1 faecal sample from the same etiology group."
 
 ```r
 # Faecal bacteria proportion in blood and liver
 source("scripts/stat_fecalBacteriaProportion_16SDNA.R")
 ```
 
-Differential analysis of Genus counts using DESeq2
+Differential analysis of Genus counts using DESeq2 <mark>Now Excluded from paper</mark>
 
 ```R
 # DNA samples
 source("scripts/stat_16S_deseq2_Genus.R")
+```
+
+Linear discriminant analysis for microbiome data using LEfSe <u>and</u> composition plots for supplements.
+
+```R
+# LEfSe
+source("scripts/stat_16S_LEFSe.R")
 ```
 
 ##### Transcriptome (RNA-seq) analysis

@@ -12,16 +12,37 @@ library(data.table)
 asv_tab <- read.table("data/dada/asv_tab.tsv", check.names = F)
 spl_meta <- fread("data/meta/samples_16S_DNA.csv")
 spl_meta <- spl_meta[include == TRUE]
+spl_meta <- spl_meta[sample != 576]
 
 n_cts <- colSums(asv_tab)[1]
 
 # Definition of faecal ASVs: The ASV has an relative abundance of >= 1% in at least 1 faecal sample.
-fecal_asvs <- names(which(apply(asv_tab[,spl_meta[Sample_type == "faeces",sample]],1, function(x) sum(x/n_cts >= 0.01)) >= 1))
+#fecal_asvs <- names(which(apply(asv_tab[,spl_meta[Sample_type == "faeces",sample]],1, function(x) sum(x/n_cts >= 0.01)) >= 1))
 
-dt.fecal <- data.table(sample = colnames(asv_tab),
-                       prop.fecal = apply(asv_tab[fecal_asvs,],2,sum)/n_cts)
+# Definition of faecal ASVs: The ASV has an relative abundance of >= 1% in at least 1 faecal sample from the same etiology group.
+n_cts <- colSums(asv_tab)
+fecal_asvs_N <- names(which(apply(asv_tab[,spl_meta[Sample_type == "faeces" & Condition == "NAFLD",sample]],1, function(x) sum(x/n_cts[names(x)] >= 0.001)) >= 1))
+fecal_asvs_C <- names(which(apply(asv_tab[,spl_meta[Sample_type == "faeces" & Condition == "Cirrhosis",sample]],1, function(x) sum(x/n_cts[names(x)] >= 0.001)) >= 1))
+fecal_asvs_H <- names(which(apply(asv_tab[,spl_meta[Sample_type == "faeces" & Condition == "HCC",sample]],1, function(x) sum(x/n_cts[names(x)] >= 0.001)) >= 1))
+
+# dt.fecal <- data.table(sample = colnames(asv_tab),
+#                        prop.fecal = apply(asv_tab[fecal_asvs,],2,sum)/n_cts)
+# dt.fecal <- merge(dt.fecal, spl_meta)
+# dt.fecal[Condition == "cirrhosis", Condition := "Cirrhosis"]
+
+dt.fecal_new <- list()
+# NAFLD
+dt.fecal_new[["N"]] <- data.table(sample = spl_meta[Condition == "NAFLD", sample])
+dt.fecal_new[["N"]][, prop.fecal := apply(asv_tab[,sample], 2, function(x) sum(x[fecal_asvs_N])/sum(x))]
+# NAFLD
+dt.fecal_new[["C"]] <- data.table(sample = spl_meta[Condition == "Cirrhosis", sample])
+dt.fecal_new[["C"]][, prop.fecal := apply(asv_tab[,sample], 2, function(x) sum(x[fecal_asvs_C])/sum(x))]
+# HCC
+dt.fecal_new[["H"]] <- data.table(sample = spl_meta[Condition == "HCC", sample])
+dt.fecal_new[["H"]][, prop.fecal := apply(asv_tab[,sample], 2, function(x) sum(x[fecal_asvs_H])/sum(x))]
+
+dt.fecal <- rbindlist(dt.fecal_new)
 dt.fecal <- merge(dt.fecal, spl_meta)
-dt.fecal[Condition == "cirrhosis", Condition := "Cirrhosis"]
 
 dt.fecal$Condition <- factor(dt.fecal$Condition, levels = c("NAFLD","Cirrhosis","HCC"))
 
@@ -46,7 +67,8 @@ wilcox.test(dt.fecal[Sample_type == "liver" & Condition == "NAFLD",     prop.fec
             dt.fecal[Sample_type == "liver" & Condition %in% c("HCC"), prop.fecal], alternative = "less")
 
 my_comparisons <- list(c("NAFLD","HCC"),
-                       c("NAFLD","Cirrhosis"))
+                       c("NAFLD","Cirrhosis"),
+                       c("HCC","Cirrhosis"))
 
 p <- ggplot(dt.fecal[Sample_type != "faeces"], aes(Condition, prop.fecal, fill = Condition)) +
   geom_boxplot(outlier.shape = NA) + 
@@ -62,11 +84,11 @@ p <- ggplot(dt.fecal[Sample_type != "faeces"], aes(Condition, prop.fecal, fill =
         axis.text = element_text(color = "black"),
         axis.text.x = element_text(angle = 45, hjust = 1, color = "black")) +
   stat_compare_means(comparisons = my_comparisons, method = "wilcox.test",
-                     method.args = list(alternative = "less"),
-                     label.y = c(0.5, 0.55),
+                     #method.args = list(alternative = "less"),
+                     label.y = c(0.5, 0.54, 0.46)+0.1,
                      label.y.npc = c("middle", "middle", "middle"),
                      tip.length = 0.01)
-p$layers[[3]]$aes_params$textsize <- 3
+p$layers[[3]]$aes_params$textsize <- 2.5
 p
 
 ggsave("output/plots/16S_fecalASVs_liver_blood.pdf", plot = p,
