@@ -1,3 +1,5 @@
+library(pairwiseAdonis)
+
 myCol <- c(NAFLD = "#2c7bb6", Cirrhosis = "#fdae61", HCC = "#d7191c")
 set.seed(24118)
 
@@ -109,6 +111,7 @@ names(BC_MDS) <- gsub(" \\(DNA\\)$","",names(BC_MDS))
 # Plotting  #
 # ~ ~ ~ ~ ~ #
 beta_plots <- list()
+posthoc_adonis <- list()
 for(itype in names(BC_MDS)) {
   tmp <- copy(BC_MDS[[itype]]$MDS)
   tmp$Condition <- factor(tmp$Condition, levels = c("NAFLD","Cirrhosis","HCC"))
@@ -123,7 +126,8 @@ for(itype in names(BC_MDS)) {
   
   # if(itype == "liver")
   #   tmp <- tmp[MDS1 > -50]
-  
+  # Post-Hoc
+  posthoc_adonis[[itype]] <- pairwise.adonis(BC_MDS[[itype]]$dist, factors = BC_MDS[[itype]]$MDS$Condition)
   
   p <- ggplot(tmp, aes(MDS1, MDS2, col = Condition, fill = Condition)) +
     stat_ellipse(geom = "polygon", alpha = 0.2) +
@@ -156,5 +160,7 @@ p_comb_diversity <- ggpubr::ggarrange(p_comb_alpha, p_beta_comb, ncol = 1, label
 ggsave("output/plots/submission1/Fig1.pdf", plot = p_comb_diversity,
        height = 6.5, width = 7) 
 
+print(posthoc_adonis, file = )
 
-
+fwrite(rbindlist(posthoc_adonis, idcol = "Sample_type"),
+       "output/files/betaDiv_posthoc_permanova.csv")

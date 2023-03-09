@@ -13,17 +13,26 @@ asv_tab <- read.table("data/dada/asv_tab.tsv", check.names = F)
 spl_meta <- fread("data/meta/samples_16S_DNA.csv")
 spl_meta <- spl_meta[include == TRUE]
 spl_meta <- spl_meta[sample != 576]
+#spl_meta <- spl_meta[underlying_condition == "NAFLD"]
+#spl_meta <- spl_meta[Condition == "NAFLD" | underlying_condition == "HCV"]
+spl_meta[, table(Condition, Sample_type)]
 
-n_cts <- colSums(asv_tab)[1]
+# n_cts <- colSums(asv_tab)[1]
 
 # Definition of faecal ASVs: The ASV has an relative abundance of >= 1% in at least 1 faecal sample.
 #fecal_asvs <- names(which(apply(asv_tab[,spl_meta[Sample_type == "faeces",sample]],1, function(x) sum(x/n_cts >= 0.01)) >= 1))
 
 # Definition of faecal ASVs: The ASV has an relative abundance of >= 1% in at least 1 faecal sample from the same etiology group.
 n_cts <- colSums(asv_tab)
+# abs > 1
 fecal_asvs_N <- names(which(apply(asv_tab[,spl_meta[Sample_type == "faeces" & Condition == "NAFLD",sample]],1, function(x) sum(x/n_cts[names(x)] >= 0.001)) >= 1))
 fecal_asvs_C <- names(which(apply(asv_tab[,spl_meta[Sample_type == "faeces" & Condition == "Cirrhosis",sample]],1, function(x) sum(x/n_cts[names(x)] >= 0.001)) >= 1))
 fecal_asvs_H <- names(which(apply(asv_tab[,spl_meta[Sample_type == "faeces" & Condition == "HCC",sample]],1, function(x) sum(x/n_cts[names(x)] >= 0.001)) >= 1))
+# # rel > 5%
+# fecal_asvs_N <- names(which(apply(asv_tab[,spl_meta[Sample_type == "faeces" & Condition == "NAFLD",sample]],1, function(x) sum(x/n_cts[names(x)] >= 0.001)) >= spl_meta[Sample_type == "faeces" & Condition == "NAFLD",.N] * 0.05))
+# fecal_asvs_C <- names(which(apply(asv_tab[,spl_meta[Sample_type == "faeces" & Condition == "Cirrhosis",sample]],1, function(x) sum(x/n_cts[names(x)] >= 0.001)) >= spl_meta[Sample_type == "faeces" & Condition == "Cirrhosis",.N] * 0.05))
+# fecal_asvs_H <- names(which(apply(asv_tab[,spl_meta[Sample_type == "faeces" & Condition == "HCC",sample]],1, function(x) sum(x/n_cts[names(x)] >= 0.001)) >= spl_meta[Sample_type == "faeces" & Condition == "HCC",.N] * 0.05))
+
 
 # dt.fecal <- data.table(sample = colnames(asv_tab),
 #                        prop.fecal = apply(asv_tab[fecal_asvs,],2,sum)/n_cts)

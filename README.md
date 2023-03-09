@@ -78,11 +78,13 @@ source("scripts/stat_betaDiversity.R")
 
 ##### Compositional analysis
 
-Faecal bacteria in blood and liver samples. Definition of <u>faecal bacteria</u>: "The ASV has an relative abundance of >= 0.1% in at least 1 faecal sample from the same etiology group."
+Fecal bacteria in blood and liver samples. 
+
+> **Definition of <u>fecal bacteria</u>**:  "A genus that has a relative abundance of >= 0.1% in at least 5% of the fecal samples from the same disease condition group".
 
 ```r
 # Faecal bacteria proportion in blood and liver
-source("scripts/stat_fecalBacteriaProportion_16SDNA.R")
+source("scripts/stat_fecalBacteriaProportion_16SDNA_Genus_level.R")
 ```
 
 Differential analysis of Genus counts using DESeq2 <mark>Now Excluded from paper</mark>
