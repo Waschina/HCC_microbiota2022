@@ -160,7 +160,5 @@ p_comb_diversity <- ggpubr::ggarrange(p_comb_alpha, p_beta_comb, ncol = 1, label
 ggsave("output/plots/submission1/Fig1.pdf", plot = p_comb_diversity,
        height = 6.5, width = 7) 
 
-print(posthoc_adonis, file = )
-
 fwrite(rbindlist(posthoc_adonis, idcol = "Sample_type"),
        "output/files/betaDiv_posthoc_permanova.csv")

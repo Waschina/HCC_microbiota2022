@@ -17,7 +17,7 @@ spl_meta <- fread("data/meta/samples_16S_DNA.csv")
 spl_meta <- spl_meta[include == TRUE]
 spl_meta <- spl_meta[sample != 576]
 spl_meta <- spl_meta[sample %in% colnames(asv_tab)]
-spl_meta <- spl_meta[underlying_condition == "NAFLD"]
+#spl_meta <- spl_meta[underlying_condition == "NAFLD"]
 asv_tab <- asv_tab[, colnames(asv_tab) %in% spl_meta$sample]
 
 

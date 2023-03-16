@@ -91,7 +91,7 @@ Differential analysis of Genus counts using DESeq2 <mark>Now Excluded from paper
 
 ```R
 # DNA samples
-source("scripts/stat_16S_deseq2_Genus.R")
+# source("scripts/stat_16S_deseq2_Genus.R")
 ```
 
 Linear discriminant analysis for microbiome data using LEfSe <u>and</u> composition plots for supplements.
